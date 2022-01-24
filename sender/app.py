@@ -7,12 +7,11 @@ try:
 except:
     import mock.w1thermsensor as w1thermsensor
 
-TEMP_CHECK_PERIOD = 5  # seconds
+TEMP_CHECK_PERIOD = 1  # seconds
 
 print("Sinux sender app started")
 
 sensor = w1thermsensor.W1ThermSensor()
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 config = configparser.ConfigParser()
 config.read('config.ini')
 
@@ -21,10 +20,25 @@ port = int(config['DEFAULT']['Port'])
 
 print(f"Receiver: {host}:{port}")
 
-sock.connect((host, port))
+is_connected = False
 
 while True:
-    temp = sensor.get_temperature()
-    print(temp)
-    sock.send(str(temp).encode())
+    if is_connected is False:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect((host, port))
+            print("Connected")
+            is_connected = True
+        except:
+            pass
+
+    if is_connected is True:
+        temp = sensor.get_temperature()
+        print(temp)
+        try:
+            sock.send(f"{temp}<EOF>".encode())
+        except:
+            is_connected = False
+            sock.close()
+
     time.sleep(TEMP_CHECK_PERIOD)
