@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -23,6 +24,8 @@ namespace Sinux
         public FormSinux()
         {
             InitializeComponent();
+            CenterToScreen();
+
             ContextMenu menu = new ContextMenu();
             menu.MenuItems.Add("Open Temperature Log");
             menu.MenuItems.Add("Exit", ContextMenuExit);
@@ -81,7 +84,12 @@ namespace Sinux
                     float temp = float.Parse(msg);
                     if (threshold_achieved == false && temp <= tempThreshold)
                     {
-                        notifyIcon1.ShowBalloonTip(10000, "Gotowe!", "Woda gotowa.", ToolTipIcon.Info);
+                        notifyIcon1.ShowBalloonTip(10000, "Ready!", "Your water is ready", ToolTipIcon.Info);
+                        using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Alarm05.wav"))
+                        {
+                            Console.WriteLine(soundPlayer.IsLoadCompleted);
+                            soundPlayer.PlayLooping();
+                        }
                         threshold_achieved = true;
                     }
                 }

@@ -46,7 +46,7 @@ namespace Sinux
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Temperatura:";
+            this.label1.Text = "Temperature:";
             // 
             // label2
             // 
@@ -66,7 +66,7 @@ namespace Sinux
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 37);
+            this.label3.Location = new System.Drawing.Point(12, 37);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(31, 13);
             this.label3.TabIndex = 2;
@@ -74,7 +74,7 @@ namespace Sinux
             // 
             // txtLimit
             // 
-            this.txtLimit.Location = new System.Drawing.Point(94, 34);
+            this.txtLimit.Location = new System.Drawing.Point(91, 34);
             this.txtLimit.Name = "txtLimit";
             this.txtLimit.Size = new System.Drawing.Size(48, 20);
             this.txtLimit.TabIndex = 3;
@@ -94,7 +94,7 @@ namespace Sinux
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(234, 81);
+            this.ClientSize = new System.Drawing.Size(210, 68);
             this.Controls.Add(this.labLimit);
             this.Controls.Add(this.txtLimit);
             this.Controls.Add(this.label3);

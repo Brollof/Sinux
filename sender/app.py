@@ -31,8 +31,7 @@ while True:
             is_connected = True
         except:
             pass
-
-    if is_connected is True:
+    else:
         temp = sensor.get_temperature()
         print(temp)
         try:
