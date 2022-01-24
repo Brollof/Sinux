@@ -17,10 +17,17 @@ namespace Sinux
     {
         private bool socketInitialized = false;
         private Socket clientSocket = null;
+        private float tempThreshold = 0.0f;
+        private bool threshold_achieved = false;
 
         public FormSinux()
         {
             InitializeComponent();
+            ContextMenu menu = new ContextMenu();
+            menu.MenuItems.Add("Open Temperature Log");
+            menu.MenuItems.Add("Exit", ContextMenuExit);
+            notifyIcon1.ContextMenu = menu;
+
             new Thread(() => RunServer()).Start();
         }
 
@@ -38,7 +45,7 @@ namespace Sinux
             {
                 if (socketInitialized == false)
                 {
-                    Console.WriteLine("Waiting connection...");
+                    Console.WriteLine("Waiting for a connection...");
                     clientSocket = listener.Accept();
                     Console.WriteLine("Connected");
                     socketInitialized = true;
@@ -69,7 +76,14 @@ namespace Sinux
                     }
 
                     Console.WriteLine("Text received: {0} ", msg);
-                    label2.Text = msg;
+                    label2.Text = msg + "°C";
+
+                    float temp = float.Parse(msg);
+                    if (threshold_achieved == false && temp <= tempThreshold)
+                    {
+                        notifyIcon1.ShowBalloonTip(10000, "Gotowe!", "Woda gotowa.", ToolTipIcon.Info);
+                        threshold_achieved = true;
+                    }
                 }
             }
         }
@@ -92,6 +106,26 @@ namespace Sinux
         {
             Show();
             WindowState = FormWindowState.Normal;
+        }
+
+        private void ContextMenuExit(object sender, EventArgs e)
+        {
+            notifyIcon1.Visible = false;
+            Application.Exit();
+            Environment.Exit(0);
+        }
+
+        private void txtLimit_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Return))
+            {
+                if (float.TryParse(txtLimit.Text, out float temp) == true)
+                {
+                    e.Handled = true;
+                    tempThreshold = temp;
+                    labLimit.Text = tempThreshold.ToString() + "°C";
+                }
+            }
         }
     }
 }
