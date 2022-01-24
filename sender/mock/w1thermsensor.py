@@ -1,8 +1,5 @@
-import random
-
-
 class W1ThermSensor:
-    values = list(range(25, 31))
+    values = [25.0, 25.5, 26.0, 27.3, 29.123]
 
     def __init__(self):
         print("Mock W1 Therm Sensor created")

@@ -78,7 +78,7 @@ namespace Sinux
             this.txtLimit.Name = "txtLimit";
             this.txtLimit.Size = new System.Drawing.Size(48, 20);
             this.txtLimit.TabIndex = 3;
-            this.txtLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLimit_KeyPress);
+            this.txtLimit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtLimit_KeyPress);
             // 
             // labLimit
             // 

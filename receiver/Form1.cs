@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Media;
 using System.Net;
@@ -81,13 +82,13 @@ namespace Sinux
                     Console.WriteLine("Text received: {0} ", msg);
                     label2.Text = msg + "°C";
 
-                    float temp = float.Parse(msg);
+                    // TODO: Move sound playing to the new thread
+                    float temp = float.Parse(msg, CultureInfo.InvariantCulture);
                     if (threshold_achieved == false && temp <= tempThreshold)
                     {
                         notifyIcon1.ShowBalloonTip(10000, "Ready!", "Your water is ready", ToolTipIcon.Info);
                         using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Alarm05.wav"))
                         {
-                            Console.WriteLine(soundPlayer.IsLoadCompleted);
                             soundPlayer.PlayLooping();
                         }
                         threshold_achieved = true;
@@ -123,11 +124,11 @@ namespace Sinux
             Environment.Exit(0);
         }
 
-        private void txtLimit_KeyPress(object sender, KeyPressEventArgs e)
+        private void TxtLimit_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == Convert.ToChar(Keys.Return))
             {
-                if (float.TryParse(txtLimit.Text, out float temp) == true)
+                if (float.TryParse(txtLimit.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float temp) == true)
                 {
                     e.Handled = true;
                     tempThreshold = temp;
