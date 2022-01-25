@@ -11,7 +11,6 @@ namespace Sinux
 {
     public partial class FormTempChart : Form
     {
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
         private readonly Thread fillThread = null;
 
         public FormTempChart()
@@ -47,7 +46,7 @@ namespace Sinux
         private void FillChart(string filepath)
         {
             Console.WriteLine("Fill chart thread started!");
-            while (!cts.IsCancellationRequested)
+            while (true)
             {
                 List<DateTime> xs = new List<DateTime>();
                 List<float> ys = new List<float>();
@@ -86,14 +85,13 @@ namespace Sinux
                 }));
                 Thread.Sleep(1000);
             }
-            Console.WriteLine("Fill chart thread has ended!");
         }
 
         private void FormTempChart_FormClosing(object sender, FormClosingEventArgs e)
         {
-            cts.Cancel();
             if (fillThread != null)
             {
+                fillThread.Abort();
                 fillThread.Join();
             }
         }
