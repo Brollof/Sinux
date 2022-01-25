@@ -15,6 +15,7 @@ namespace Sinux
         private float tempThreshold = 0.0f;
         private float currentTemperature = 0.0f;
         private const int SOUND_REPEAT_NUM = 2;
+        private Socket clientSocket = null;
 
         public FormSinux()
         {
@@ -26,13 +27,13 @@ namespace Sinux
             menu.MenuItems.Add("Exit", ContextMenuExit);
             notifyIcon1.ContextMenu = menu;
 
+
             new Thread(() => RunServer()).Start();
             new Thread(() => NotifyUser()).Start();
         }
 
         private void RunServer()
         {
-            Socket clientSocket = null;
             bool socketInitialized = false;
             IPAddress ipAddr = IPAddress.Parse("192.168.50.164");
             Socket listener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -149,6 +150,10 @@ namespace Sinux
 
         private void OnExit()
         {
+            if (clientSocket != null)
+            {
+                clientSocket.Close();
+            }
             notifyIcon1.Visible = false;
             notifyIcon1.Dispose();
             Application.Exit();
