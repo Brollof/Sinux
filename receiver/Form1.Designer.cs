@@ -32,7 +32,7 @@ namespace Sinux
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSinux));
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labCurrentTemp = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.txtLimit = new System.Windows.Forms.TextBox();
@@ -48,14 +48,14 @@ namespace Sinux
             this.label1.TabIndex = 0;
             this.label1.Text = "Temperature:";
             // 
-            // label2
+            // labCurrentTemp
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(88, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(24, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "0°C";
+            this.labCurrentTemp.AutoSize = true;
+            this.labCurrentTemp.Location = new System.Drawing.Point(88, 9);
+            this.labCurrentTemp.Name = "labCurrentTemp";
+            this.labCurrentTemp.Size = new System.Drawing.Size(24, 13);
+            this.labCurrentTemp.TabIndex = 1;
+            this.labCurrentTemp.Text = "0°C";
             // 
             // notifyIcon1
             // 
@@ -98,7 +98,7 @@ namespace Sinux
             this.Controls.Add(this.labLimit);
             this.Controls.Add(this.txtLimit);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labCurrentTemp);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -115,7 +115,7 @@ namespace Sinux
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labCurrentTemp;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtLimit;

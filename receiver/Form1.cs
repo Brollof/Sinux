@@ -76,7 +76,7 @@ namespace Sinux
                     }
 
                     Console.WriteLine("Text received: {0} ", msg);
-                    label2.Text = msg + "°C";
+                    labCurrentTemp.Invoke(new Action(() => labCurrentTemp.Text = msg + "°C"));
                     ParseFloat(msg, out currentTemperature);
                 }
                 Thread.Sleep(50);
