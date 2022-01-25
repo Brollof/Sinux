@@ -11,8 +11,8 @@ namespace Sinux
 {
     public partial class FormTempChart : Form
     {
-        private CancellationTokenSource cts = new CancellationTokenSource();
-        private Thread fillThread = null;
+        private readonly CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly Thread fillThread = null;
 
         public FormTempChart()
         {
@@ -51,8 +51,21 @@ namespace Sinux
             {
                 List<DateTime> xs = new List<DateTime>();
                 List<float> ys = new List<float>();
+                string[] data = null;
 
-                foreach (string line in File.ReadAllLines(filepath))
+                if (filepath.ToLower() == Logfile.Instance.GetLogFile().ToLower())
+                {
+                    // If same file as log file has been chosen,
+                    // we need to operate thread-safe.
+                    data = Logfile.Instance.ReadLines();
+                }
+                else
+                {
+                    data = File.ReadAllLines(filepath);
+                }
+
+
+                foreach (string line in data)
                 {
                     string[] result = Regex.Split(line, "; ");
                     if (result.Length == 2)

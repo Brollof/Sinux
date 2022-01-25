@@ -82,5 +82,10 @@ namespace Sinux
         {
             return logdir;
         }
+
+        public string GetLogFile()
+        {
+            return logfile;
+        }
     }
 }
