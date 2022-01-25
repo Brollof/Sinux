@@ -37,8 +37,6 @@ namespace Sinux
             this.label3 = new System.Windows.Forms.Label();
             this.txtLimit = new System.Windows.Forms.TextBox();
             this.labLimit = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -91,21 +89,12 @@ namespace Sinux
             this.labLimit.TabIndex = 4;
             this.labLimit.Text = "0°C";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(173, 31);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
-            // 
             // FormSinux
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(210, 68);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labLimit);
             this.Controls.Add(this.txtLimit);
             this.Controls.Add(this.label3);
@@ -118,7 +107,6 @@ namespace Sinux
             this.Text = "Sinux";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSinux_FormClosing);
             this.Resize += new System.EventHandler(this.FormSinux_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,7 +120,6 @@ namespace Sinux
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtLimit;
         private System.Windows.Forms.Label labLimit;
-        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

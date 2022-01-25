@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using System.Media;
 using System.Net;
@@ -26,8 +25,7 @@ namespace Sinux
             menu.MenuItems.Add("Open Temperature Log");
             menu.MenuItems.Add("Exit", ContextMenuExit);
             notifyIcon1.ContextMenu = menu;
-
-
+ 
             new Thread(() => RunServer()).Start();
             new Thread(() => NotifyUser()).Start();
         }
@@ -66,7 +64,7 @@ namespace Sinux
                         catch (SocketException e)
                         {
                             socketInitialized = false;
-                            Console.WriteLine("Error: Socket Exception.{0}{1}.", e.Message, e.ErrorCode);
+                            Console.WriteLine("Error: Socket Exception.{0},{1}.", e.Message, e.ErrorCode);
                             break;
                         }
 
@@ -80,6 +78,7 @@ namespace Sinux
                     Console.WriteLine("Text received: {0} ", msg);
                     labCurrentTemp.Invoke(new Action(() => labCurrentTemp.Text = msg + "°C"));
                     ParseFloat(msg, out currentTemperature);
+                    WriteTemperature(currentTemperature.ToString());
                 }
                 Thread.Sleep(50);
             }
@@ -158,6 +157,12 @@ namespace Sinux
             notifyIcon1.Dispose();
             Application.Exit();
             Environment.Exit(0);
+        }
+
+        private void WriteTemperature(string temp)
+        {
+            string now = DateTime.Now.TimeOfDay.ToString();
+            Logfile.Instance.Write(String.Format("{0}; {1}", now, temp));
         }
     }
 }
