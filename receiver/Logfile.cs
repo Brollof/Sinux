@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Sinux
 {
@@ -9,6 +10,7 @@ namespace Sinux
         private static readonly string logdir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
         private static string logfile = string.Empty;
         public static readonly Logfile Instance = new Logfile();
+        private static ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
 
         internal Logfile()
         {
@@ -23,7 +25,41 @@ namespace Sinux
 
         public void Write(string s)
         {
-            File.AppendAllText(logfile, s + Environment.NewLine);
+            locker.EnterWriteLock();
+            try
+            {
+                File.AppendAllText(logfile, s + Environment.NewLine);
+            }
+            finally
+            {
+                locker.ExitWriteLock();
+            }
+        }
+
+        public string[] ReadLines()
+        {
+            locker.EnterReadLock();
+            try
+            {
+                return File.ReadAllLines(logfile);
+            }
+            finally
+            {
+                locker.ExitReadLock();
+            }
+        }
+
+        public string Read()
+        {
+            locker.EnterReadLock();
+            try
+            {
+                return File.ReadAllText(logfile);
+            }
+            finally
+            {
+                locker.ExitReadLock();
+            }
         }
 
         private int GetNextLogfileNumber()
@@ -40,6 +76,11 @@ namespace Sinux
                 }
             }
             return max_number + 1;
+        }
+
+        public string GetLogDir()
+        {
+            return logdir;
         }
     }
 }

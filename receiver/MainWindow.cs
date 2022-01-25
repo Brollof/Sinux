@@ -22,7 +22,7 @@ namespace Sinux
             CenterToScreen();
 
             ContextMenu menu = new ContextMenu();
-            menu.MenuItems.Add("Open Temperature Log");
+            menu.MenuItems.Add("Temperature chart", ShowTemperatureChart);
             menu.MenuItems.Add("Exit", ContextMenuExit);
             notifyIcon1.ContextMenu = menu;
  
@@ -75,7 +75,7 @@ namespace Sinux
                         }
                     }
 
-                    Console.WriteLine("Text received: {0} ", msg);
+                    Console.WriteLine("Raw data: {0} ", msg);
                     labCurrentTemp.Invoke(new Action(() => labCurrentTemp.Text = msg + "°C"));
                     ParseFloat(msg, out currentTemperature);
                     WriteTemperature(currentTemperature.ToString());
@@ -163,6 +163,13 @@ namespace Sinux
         {
             string now = DateTime.Now.TimeOfDay.ToString();
             Logfile.Instance.Write(String.Format("{0}; {1}", now, temp));
+        }
+
+        void ShowTemperatureChart(object sender, EventArgs e)
+        {
+            Console.WriteLine("temp chart");
+            var form = new formTempChart();
+            form.Show();
         }
     }
 }
