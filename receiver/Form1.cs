@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Media;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sinux
 {
     public partial class FormSinux : Form
     {
-        private bool socketInitialized = false;
-        private Socket clientSocket = null;
         private float tempThreshold = 0.0f;
-        private bool threshold_achieved = false;
+        private float currentTemperature = 0.0f;
+        private const int SOUND_REPEAT_NUM = 2;
 
         public FormSinux()
         {
@@ -33,10 +26,13 @@ namespace Sinux
             notifyIcon1.ContextMenu = menu;
 
             new Thread(() => RunServer()).Start();
+            new Thread(() => NotifyUser()).Start();
         }
 
         private void RunServer()
         {
+            Socket clientSocket = null;
+            bool socketInitialized = false;
             IPAddress ipAddr = IPAddress.Parse("192.168.50.164");
             Socket listener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             listener.Bind(new IPEndPoint(ipAddr, 60000));
@@ -81,19 +77,30 @@ namespace Sinux
 
                     Console.WriteLine("Text received: {0} ", msg);
                     label2.Text = msg + "°C";
-
-                    // TODO: Move sound playing to the new thread
-                    float temp = float.Parse(msg, CultureInfo.InvariantCulture);
-                    if (threshold_achieved == false && temp <= tempThreshold)
-                    {
-                        notifyIcon1.ShowBalloonTip(10000, "Ready!", "Your water is ready", ToolTipIcon.Info);
-                        using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Alarm05.wav"))
-                        {
-                            soundPlayer.PlayLooping();
-                        }
-                        threshold_achieved = true;
-                    }
+                    ParseFloat(msg, out currentTemperature);
                 }
+                Thread.Sleep(50);
+            }
+        }
+
+        private void NotifyUser()
+        {
+            while (true)
+            {
+                if (currentTemperature > 0 && currentTemperature <= tempThreshold)
+                {
+                    notifyIcon1.ShowBalloonTip(10000, "Ready!", "Your water is ready", ToolTipIcon.Info);
+                    using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Alarm05.wav"))
+                    {
+                        for (int i = 0; i < SOUND_REPEAT_NUM; i++)
+                        {
+                            soundPlayer.PlaySync();
+                            Thread.Sleep(500);
+                        }
+                    }
+                    return;
+                }
+                Thread.Sleep(100);
             }
         }
 
@@ -128,13 +135,18 @@ namespace Sinux
         {
             if (e.KeyChar == Convert.ToChar(Keys.Return))
             {
-                if (float.TryParse(txtLimit.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float temp) == true)
+                if (ParseFloat(txtLimit.Text, out float temp) == true)
                 {
                     e.Handled = true;
                     tempThreshold = temp;
                     labLimit.Text = tempThreshold.ToString() + "°C";
                 }
             }
+        }
+
+        private bool ParseFloat(string s, out float result)
+        {
+            return float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out result);
         }
     }
 }
