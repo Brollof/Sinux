@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Sinux
 {
-    public partial class formTempChart : Form
+    public partial class FormTempChart : Form
     {
-        public formTempChart()
+        private CancellationTokenSource cts = new CancellationTokenSource();
+        private Thread fillThread = null;
+
+        public FormTempChart()
         {
             InitializeComponent();
             InitChart();
@@ -19,7 +24,8 @@ namespace Sinux
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                FillChart(openFileDialog.FileName);
+                fillThread = new Thread(() => FillChart(openFileDialog.FileName));
+                fillThread.Start();
             }
         }
 
@@ -40,19 +46,40 @@ namespace Sinux
 
         private void FillChart(string filepath)
         {
-            foreach (string line in File.ReadAllLines(filepath))
+            Console.WriteLine("Fill chart thread started!");
+            while (!cts.IsCancellationRequested)
             {
-                string[] result = Regex.Split(line, "; ");
-                if (result.Length == 2)
+                List<DateTime> xs = new List<DateTime>();
+                List<float> ys = new List<float>();
+
+                foreach (string line in File.ReadAllLines(filepath))
                 {
-                    bool timeResult = DateTime.TryParse(result[0], out DateTime time);
-                    bool tempResult = float.TryParse(result[1], out float temp);
-                    if (timeResult == true && tempResult == true)
+                    string[] result = Regex.Split(line, "; ");
+                    if (result.Length == 2)
                     {
-                        chartTemp.Series[0].Points.AddXY(time, temp);
+                        bool timeResult = DateTime.TryParse(result[0], out DateTime time);
+                        bool tempResult = float.TryParse(result[1], out float temp);
+                        if (timeResult == true && tempResult == true)
+                        {
+                            xs.Add(time);
+                            ys.Add(temp);
+                        }
                     }
                 }
+
+                chartTemp.Invoke(new Action(() => {
+                    chartTemp.Series[0].Points.Clear();
+                    chartTemp.Series[0].Points.DataBindXY(xs, ys);
+                }));
+                Thread.Sleep(1000);
             }
+            Console.WriteLine("Fill chart thread has ended!");
+        }
+
+        private void FormTempChart_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            cts.Cancel();
+            fillThread.Join();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Sinux
         private float currentTemperature = 0.0f;
         private const int SOUND_REPEAT_NUM = 2;
         private Socket clientSocket = null;
+        private FormTempChart formTempChart = null;
 
         public FormSinux()
         {
@@ -153,6 +154,13 @@ namespace Sinux
             {
                 clientSocket.Close();
             }
+
+            if (formTempChart != null)
+            {
+                formTempChart.Close();
+                formTempChart.Dispose();
+            }
+
             notifyIcon1.Visible = false;
             notifyIcon1.Dispose();
             Application.Exit();
@@ -167,9 +175,14 @@ namespace Sinux
 
         void ShowTemperatureChart(object sender, EventArgs e)
         {
-            Console.WriteLine("temp chart");
-            var form = new formTempChart();
-            form.Show();
+            if (formTempChart != null)
+            {
+                formTempChart.Close();
+                formTempChart.Dispose();
+            }
+
+            formTempChart = new FormTempChart();
+            formTempChart.Show();
         }
     }
 }

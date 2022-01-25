@@ -1,7 +1,7 @@
 ﻿
 namespace Sinux
 {
-    partial class formTempChart
+    partial class FormTempChart
     {
         /// <summary>
         /// Required designer variable.
@@ -29,9 +29,9 @@ namespace Sinux
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formTempChart));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTempChart));
             this.chartTemp = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemp)).BeginInit();
@@ -39,25 +39,26 @@ namespace Sinux
             // 
             // chartTemp
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartTemp.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartTemp.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.chartTemp.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartTemp.Legends.Add(legend1);
             this.chartTemp.Location = new System.Drawing.Point(12, 12);
             this.chartTemp.Name = "chartTemp";
             this.chartTemp.Size = new System.Drawing.Size(776, 426);
             this.chartTemp.TabIndex = 0;
             this.chartTemp.Text = "tempChart";
             // 
-            // formTempChart
+            // FormTempChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.chartTemp);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "formTempChart";
+            this.Name = "FormTempChart";
             this.Text = "Temperature Chart";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormTempChart_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.chartTemp)).EndInit();
             this.ResumeLayout(false);
 
