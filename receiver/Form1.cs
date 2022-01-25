@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.Media;
 using System.Net;
@@ -106,8 +107,7 @@ namespace Sinux
 
         private void FormSinux_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            Hide();
+            OnExit();
         }
 
         private void FormSinux_Resize(object sender, EventArgs e)
@@ -126,9 +126,7 @@ namespace Sinux
 
         private void ContextMenuExit(object sender, EventArgs e)
         {
-            notifyIcon1.Visible = false;
-            Application.Exit();
-            Environment.Exit(0);
+            OnExit();
         }
 
         private void TxtLimit_KeyPress(object sender, KeyPressEventArgs e)
@@ -147,6 +145,14 @@ namespace Sinux
         private bool ParseFloat(string s, out float result)
         {
             return float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out result);
+        }
+
+        private void OnExit()
+        {
+            notifyIcon1.Visible = false;
+            notifyIcon1.Dispose();
+            Application.Exit();
+            Environment.Exit(0);
         }
     }
 }
