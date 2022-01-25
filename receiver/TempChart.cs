@@ -92,7 +92,10 @@ namespace Sinux
         private void FormTempChart_FormClosing(object sender, FormClosingEventArgs e)
         {
             cts.Cancel();
-            fillThread.Join();
+            if (fillThread != null)
+            {
+                fillThread.Join();
+            }
         }
     }
 }
