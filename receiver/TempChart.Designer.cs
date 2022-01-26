@@ -29,11 +29,13 @@ namespace Sinux
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTempChart));
             this.chartTemp = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.chartTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chartTemp)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,6 +51,11 @@ namespace Sinux
             this.chartTemp.TabIndex = 0;
             this.chartTemp.Text = "tempChart";
             // 
+            // chartTimer
+            // 
+            this.chartTimer.Interval = 1000;
+            this.chartTimer.Tick += new System.EventHandler(this.chartTimer_Tick);
+            // 
             // FormTempChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -58,7 +65,6 @@ namespace Sinux
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormTempChart";
             this.Text = "Temperature Chart";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormTempChart_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.chartTemp)).EndInit();
             this.ResumeLayout(false);
 
@@ -68,5 +74,6 @@ namespace Sinux
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chartTemp;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Timer chartTimer;
     }
 }
