@@ -59,7 +59,7 @@ namespace Sinux
 
             if (filepath.ToLower() == Logfile.Instance.GetLogFile().ToLower())
             {
-                // If same file as log file has been chosen,
+                // If chosen file is the same as current log file,
                 // we need to operate thread-safe.
                 data = Logfile.Instance.ReadLines();
             }

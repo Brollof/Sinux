@@ -31,7 +31,6 @@ namespace Sinux
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTempChart));
             this.chartTemp = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -41,10 +40,11 @@ namespace Sinux
             // 
             // chartTemp
             // 
+            this.chartTemp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             chartArea1.Name = "ChartArea1";
             this.chartTemp.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartTemp.Legends.Add(legend1);
             this.chartTemp.Location = new System.Drawing.Point(12, 12);
             this.chartTemp.Name = "chartTemp";
             this.chartTemp.Size = new System.Drawing.Size(776, 426);
