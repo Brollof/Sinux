@@ -77,9 +77,15 @@ namespace Sinux
                     }
 
                     Console.WriteLine("Raw data: {0} ", msg);
-                    labCurrentTemp.Invoke(new Action(() => labCurrentTemp.Text = msg + "°C"));
-                    ParseFloat(msg, out currentTemperature);
-                    WriteTemperature(currentTemperature.ToString());
+
+                    if (ParseFloat(msg, out currentTemperature) == true)
+                    {
+                        if (currentTemperature > 0)
+                        {
+                            labCurrentTemp.Invoke(new Action(() => labCurrentTemp.Text = msg + "°C"));
+                            WriteTemperature(currentTemperature.ToString());
+                        }
+                    }
                 }
                 Thread.Sleep(50);
             }
